@@ -3,6 +3,7 @@ package com.company;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -32,7 +33,47 @@ public class Main {
             intBuffer.putInt(896);
             intBuffer.flip();
             numBytes = fileChannel.write(intBuffer);
-            System.out.println("numbytes written "+ numBytes);
+            System.out.println("numbytes written " + numBytes);
+
+//            RandomAccessFile ra = new RandomAccessFile("data.dat", "rwd");
+//            FileChannel channel = ra.getChannel();
+//            long numBytesRead = channel.read(buffer);
+//            buffer.flip();
+//            if(buffer.hasArray()){
+//                System.out.println("byte buffer " + new String(buffer.array()));
+//            }
+
+            RandomAccessFile ra = new RandomAccessFile("data.dat", "rwd");
+            FileChannel channel = ra.getChannel();
+//            outputBytes[0] = 'a';
+//            outputBytes[1] = 'b';
+            buffer.flip();
+            long numBytesRead = channel.read(buffer);
+            System.out.println("numbytesread" + numBytesRead);
+            if (buffer.hasArray()) {
+                System.out.println("byte buffer = " + new String(buffer.array()));
+            }
+
+            intBuffer.flip();
+            numBytesRead = channel.read(intBuffer);
+            System.out.println(intBuffer.getInt(0));
+            intBuffer.flip();
+            numBytesRead = channel.read(intBuffer);
+            System.out.println(intBuffer.getInt(0));
+
+//            relative read
+//            intBuffer.flip();
+//            numBytesRead = channel.read(intBuffer);
+//            System.out.println("numbytesread" + numBytesRead);
+//            intBuffer.flip();
+//            System.out.println(intBuffer.getInt());
+//            intBuffer.flip();
+//            numBytesRead = channel.read(intBuffer);
+//            intBuffer.flip();
+//            System.out.println(intBuffer.getInt());
+
+            channel.close();
+            ra.close();
 
 
         } catch (FileNotFoundException e) {
